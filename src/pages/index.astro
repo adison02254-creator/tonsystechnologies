@@ -1,268 +1,276 @@
 ---
-
+// Astro Component Section
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/tonsys-logo-only.png" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>tonsys homebase</title>
-
-		<style>
-			/* css */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Kanit', sans-serif;
+<html lang="th">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TONSYS | Ultimate Project Hub & Contact</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           [1] SETUP & ANIMATED BACKGROUND
+           ========================================= */
+        :root {
+            --primary-gold: #ffeb3b;
+            --accent-blue: #00d2ff;
+            --bg-gradient: linear-gradient(-45deg, #1a2a6c, #b21f1f, #fdbb2d, #22c1c3);
+            --glass: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; cursor: none; }
+        
         body {
-            /* พื้นหลังสีเข้มขึ้นเพื่อให้ Particle ชัดเจน */
-            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* พื้นที่สำหรับ Particle Background */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1; /* อยู่หลังสุด */
-        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- แถบเมนู (Navbar) Glassmorphism --- */
+        /* ตัวเมาส์วงกลม */
+        #cursor { position: fixed; width: 20px; height: 20px; background: rgba(255, 235, 59, 0.5); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.1s ease; }
+        
+        /* พื้นหลัง Particles */
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+        
+        /* ลูกบอลแสงฟุ้งๆ */
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.4; animation: float 20s infinite alternate; }
+        .orb-1 { width: 400px; height: 400px; background: #764ba2; top: -10%; left: -10%; }
+        .orb-2 { width: 300px; height: 300px; background: #ff512f; bottom: 10%; right: 5%; }
+
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(100px, 50px); } }
+
+        /* =========================================
+           [2] UI ELEMENTS (NAV & HERO)
+           ========================================= */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 10%;
-            background: rgba(255, 255, 255, 0.05); /* โปร่งใสมากขึ้น */
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 10%; background: var(--glass); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; color: #ffeb3b; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-gold); }
 
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 30px; }
-        nav ul li a { color: white; text-decoration: none; transition: 0.3s; font-weight: 400; position: relative;}
-        /* เส้นใต้เวลา Hover เมนู */
-        nav ul li a::after {
-            content: ''; width: 0; height: 2px; background: #ffeb3b; position: absolute; bottom: -5px; left: 0; transition: 0.3s;
-        }
-        nav ul li a:hover::after { width: 100%; }
-
-
-        /* --- ส่วนต้อนรับ (Hero Section) --- */
         .hero {
-            height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            position: relative;
+            height: 60vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; z-index: 1; padding: 0 20px;
         }
 
-        /* Animation การปรากฏตัว */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-content > * {
-            opacity: 0; /* เริ่มต้นซ่อนไว้ก่อน */
-            animation: fadeUp 1s ease-out forwards;
-        }
-
-        .hero h1 {
-            font-size: 4rem; font-weight: 800; margin-bottom: 20px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation-delay: 0.3s;
-            min-height: 1.2em; /* กันบรรทัดกระโดดตอนพิมพ์ */
-        }
-        /* สีของข้อความที่กำลังพิมพ์ */
-        .typed-text { color: #ffeb3b; }
-        /* Cursor กระพริบ */
-        .typed-cursor { color: #ffeb3b; font-weight: 100; }
-
-        .hero p {
-            font-size: 1.3rem; max-width: 700px; margin-bottom: 40px; opacity: 0.9;
-            animation-delay: 0.6s;
-            background: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 10px; /* เพิ่มพื้นหลังจางๆให้อ่านง่าย */
-        }
-
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; }
         .btn-glow {
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700; font-size: 1.1rem;
-            color: #fff;
-            background: linear-gradient(90deg, #ff512f, #dd2476); /* ปุ่มไล่สี */
-            box-shadow: 0 0 20px rgba(221, 36, 118, 0.5);
-            transition: 0.4s;
-            animation-delay: 0.9s;
-            border: 2px solid transparent;
+            padding: 15px 40px; border-radius: 50px; background: var(--primary-gold);
+            color: #000; text-decoration: none; font-weight: 700; transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255,235,59,0.4);
+        }
+        .btn-glow:hover { transform: scale(1.1); box-shadow: 0 0 40px rgba(255,235,59,0.7); }
+
+        /* =========================================
+           [3] PROJECT ARCHIVE (SEARCH & ACCORDION)
+           ========================================= */
+        .archive-section { padding: 60px 10%; z-index: 1; position: relative; }
+        
+        .search-input {
+            width: 100%; max-width: 600px; display: block; margin: 0 auto 40px;
+            padding: 15px 25px; border-radius: 50px; background: var(--glass);
+            border: 1px solid var(--glass-border); color: white; outline: none;
         }
 
-        .btn-glow:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 0 40px rgba(221, 36, 118, 0.8);
-            background: transparent;
-            border: 2px solid #dd2476;
+        .project-item {
+            background: var(--glass); border-radius: 15px; margin-bottom: 10px;
+            border: 1px solid var(--glass-border); overflow: hidden; transition: 0.3s;
+        }
+        .project-header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .project-header h3 { color: var(--primary-gold); }
+        .project-content { max-height: 0; overflow: hidden; transition: 0.5s ease; background: rgba(0,0,0,0.2); }
+        .content-inner { padding: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+
+        /* =========================================
+           [4] CONTACT SECTION (ส่วนติดต่อที่เพิ่มใหม่)
+           ========================================= */
+        .contact-section {
+            padding: 100px 10%; text-align: center; z-index: 1; position: relative;
+        }
+        .contact-card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 60px 40px; border-radius: 40px; border: 1px solid var(--glass-border);
+            max-width: 800px; margin: 0 auto;
+        }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; }
+        .social-item {
+            padding: 15px 30px; border-radius: 50px; background: rgba(255,255,255,0.1);
+            color: white; text-decoration: none; border: 1px solid var(--glass-border);
+            transition: 0.3s; font-weight: 600;
+        }
+        .social-item:hover {
+            background: var(--accent-blue); border-color: var(--accent-blue);
+            transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,210,255,0.3);
         }
 
-        /* --- ส่วน Card บริการ 3D Tilt --- */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-            padding: 80px 10%;
-            background: rgba(0,0,0,0.2); /* พื้นหลังส่วนนี้ให้เข้มขึ้นนิดนึง */
-            position: relative;
-        }
+        footer { padding: 40px; text-align: center; opacity: 0.5; font-size: 0.8rem; }
 
-        .card {
-            background: rgba(255, 255, 255, 0.1); /* Glassmorphism Card */
-            backdrop-filter: blur(10px);
-            padding: 50px 30px;
-            border-radius: 25px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            opacity: 0; animation: fadeUp 1s ease-out forwards; animation-delay: 1.2s; /* Animation */
+        @media (max-width: 768px) { #cursor { display: none; } * { cursor: auto; } }
+    </style>
+</head>
+<body>
 
-            /* สำหรับ 3D Tilt */
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-        }
-
-        .card-content {
-            transform: translateZ(30px); /* ดันเนื้อหาให้ลอยออกมาจากการ์ด */
-        }
-
-        .card i { font-size: 4rem; color: #ffeb3b; margin-bottom: 25px; display: block; text-shadow: 0 5px 10px rgba(0,0,0,0.3); }
-        .card h3 { margin-bottom: 15px; font-size: 1.5rem; }
-        .card p { color: rgba(255,255,255,0.8); }
-
-        /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: rgba(0,0,0,0.5);
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
-        }
-		</style>
-	</head>
-	<body>
-         <!-- HTML -->
-<div id="particles-js"></div>
+    <div id="cursor"></div>
+    <div id="particles-js"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
     <nav>
-        <div class="logo">HYPER<span>DEV</span></div>
-        <ul>
-            <li><a href="#">หน้าแรก</a></li>
-            <li><a href="#">ฟีเจอร์</a></li>
-            <li><a href="#">ราคา</a></li>
-            <li><a href="#">เข้าสู่ระบบ</a></li>
-        </ul>
+        <div class="logo">TONSYS</div>
+        <div style="font-size: 0.9rem; color: var(--primary-gold);">Innovative Archive</div>
     </nav>
 
     <section class="hero">
-        <div class="hero-content">
-            <h1>COMING SOON<span class="typed-text"></span></h1>
-            <p>อัปเกรดหน้าเว็บของคุณให้ดูพรีเมียม มีมิติ และน่าตื่นตาตื่นใจยิ่งกว่าเดิม ด้วยลูกเล่น Interactive ที่ทันสมัยที่สุด</p>
-            <a href="#" class="btn-glow">🔥 เริ่มต้นความเทพที่นี่</a>
+        <h1>PROJECT <span style="color:var(--primary-gold)">HUB</span></h1>
+        <p style="margin-top:10px;">รวบรวมทุกแนวคิดและผลงานโดย <span class="typed-text"></span></p>
+        <div style="margin-top: 30px;">
+            <a href="#contact" class="btn-glow nav-link">คุยกับผมเลย!</a>
         </div>
     </section>
 
-    <section class="features">
-        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
-            <div class="card-content">
-                <i>🚀</i>
-                <h3>Speed & Power</h3>
-                <p>เร็วแรง ทะลุนรก โหลดไวยิ่งกว่าแสง</p>
+    <section class="archive-section">
+        <input type="text" id="searchInput" class="search-input nav-link" placeholder="ค้นหาโปรเจกต์ของคุณ...">
+        
+        <div id="projectList">
+            <div class="project-item" data-name="Tonsys Dashboard">
+                <div class="project-header nav-link">
+                    <h3>01. Tonsys Dashboard</h3>
+                    <span>+</span>
+                </div>
+                <div class="project-content">
+                    <div class="content-inner">
+                        <div class="detail-box">
+                            <h4>แนวคิด</h4>
+                            <p>ศูนย์กลางข้อมูลสไตล์ Glassmorphism</p>
+                        </div>
+                        <div class="detail-box">
+                            <h4>ทำเพื่ออะไร</h4>
+                            <p>จัดระเบียบงานให้สวยงาม</p>
+                        </div>
+                        <div class="detail-box">
+                            <h4>วิธีใช้</h4>
+                            <p>คลิกสำรวจผ่านเมนู</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
-            <div class="card-content">
-                <i>💎</i>
-                <h3>Premium Design</h3>
-                <p>สวยหรูดูแพง ด้วยสไตล์ Glassmorphism</p>
             </div>
-        </div>
-        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
-            <div class="card-content">
-                <i>🎮</i>
-                <h3>Interactive</h3>
-                <p>ตอบสนองทุกการเคลื่อนไหวอย่างมีมิติ</p>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-card">
+            <h2 style="font-size: 2.5rem; margin-bottom: 10px;">GET IN TOUCH</h2>
+            <p style="opacity: 0.8;">สนใจร่วมงานหรือสอบถามรายละเอียดโปรเจกต์ ติดต่อได้เลยครับ</p>
+            
+            <div class="social-links">
+                <a href="https://www.facebook.com/Tonsonfurry" class="social-item nav-link">Facebook</a>
+                <a href="https://github.com/adison02254-creator" class="social-item nav-link">GitHub</a>
+                <a href="https://discord.com/channels/@furry_ton" class="social-item nav-link">Discord</a>
+                <a href="mailto:contact@tonsys.com" class="social-item nav-link" style="background: var(--primary-gold); color: #000;">Email Me</a>
             </div>
+            
+            <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.6;">พร้อมตอบกลับภายใน 24 ชั่วโมง :3</p>
         </div>
     </section>
 
     <footer>
-        &copy; 2024 Tonsys Technologies - โค้ดนี้แจกฟรี เอาไปใช้ได้เลยวัยรุ่น!
+        &copy; 2026 Tonsys Technologies - Built with Passion
     </footer>
 
+    <script is:inline src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script is:inline src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        (window as any).particlesJS('particles-js',
-          {
+        // 1. Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('.nav-link').forEach(l => {
+            l.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2.5)');
+            l.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
+        });
+
+        // 2. Continuous Particles (แก้ให้วงกลมออกมาเรื่อยๆ และเยอะขึ้น)
+        (window as any).particlesJS('particles-js', {
             "particles": {
-              "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-              "color": { "value": "#ffffff" },
-              "shape": { "type": "circle" },
-              "opacity": { "value": 0.3, "random": true },
-              "size": { "value": 3, "random": true },
-              "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-              "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": true },
+                "size": { "value": 4, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
+                "move": { 
+                    "enable": true, 
+                    "speed": 3, 
+                    "direction": "none", 
+                    "random": true, 
+                    "straight": false, 
+                    "out_mode": "out", 
+                    "bounce": false 
+                }
             },
             "interactivity": {
-              "detect_on": "canvas",
-              "events": {
-                "onhover": { "enable": true, "mode": "grab" }, /* เอาเมาส์ไปโดนแล้วจะจับเส้น */
-                "onclick": { "enable": true, "mode": "push" },
-                "resize": true
-              },
-              "modes": {
-                "grab": { "distance": 140, "line_linked": { "opacity": 1 } }
-              }
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" }, // คลิกแล้ววงกลมจะพ่นออกมาเพิ่ม
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } },
+                    "push": { "particles_nb": 4 }
+                }
             },
             "retina_detect": true
-          }
-        );
-    </script>
+        });
 
-    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-    <script>
-        var typed = new (window as any).Typed('.typed-text', {
-            /* ใส่ข้อความที่อยากให้พิมพ์ตรงนี้ */
-            strings: ['เว็บไซต์สุดล้ำ 🚀', 'ประสบการณ์ใหม่ ✨', 'ความแตกต่างที่เหนือกว่า 🔥'],
-            typeSpeed: 60,    // ความเร็วในการพิมพ์
-            backSpeed: 40,    // ความเร็วในการลบ
-            backDelay: 1500,  // รอเวลาก่อนลบ
-            loop: true        // วนซ้ำไปเรื่อยๆ
+        // 3. Typed JS
+        new (window as any).Typed('.typed-text', {
+            strings: ['Tonsys Technologies', 'The Creator', 'Problem Solver'],
+            typeSpeed: 60, backSpeed: 40, loop: true
+        });
+
+        // 4. Accordion Logic
+        document.querySelectorAll('.project-item').forEach(item => {
+            item.querySelector('.project-header').addEventListener('click', () => {
+                const content = item.querySelector('.project-content') as HTMLElement;
+                const isOpen = item.classList.contains('active');
+                
+                document.querySelectorAll('.project-item').forEach(i => {
+                    i.classList.remove('active');
+                    (i.querySelector('.project-content') as HTMLElement).style.maxHeight = '0';
+                });
+
+                if (!isOpen) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        // 5. Search Logic
+        const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            document.querySelectorAll('.project-item').forEach(item => {
+                const name = (item as HTMLElement).dataset.name.toLowerCase();
+                (item as HTMLElement).style.display = name.includes(query) ? 'block' : 'none';
+            });
         });
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-	</body>
+</body>
 </html>

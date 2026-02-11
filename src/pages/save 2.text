@@ -1,0 +1,408 @@
+---
+// [1] ส่วน Frontmatter: สำหรับเขียน Logic หลังบ้านของ Astro (ถ้ามี)
+---
+
+<html lang="th">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/tonsys-logo-only.png" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Tonsys Homebase | Modern Dashboard</title>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+        <style>
+            /* =========================================
+               [2] CSS VARIABLES & BASE STYLE
+               ========================================= */
+            :root {
+                --primary-gold: #ffeb3b;
+                --bg-gradient: linear-gradient(-45deg, #1a2a6c, #b21f1f, #fdbb2d, #22c1c3);
+                --glass-bg: rgba(255, 255, 255, 0.05);
+                --glass-border: rgba(255, 255, 255, 0.1);
+                --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Kanit', sans-serif;
+                cursor: none; /* ซ่อนเมาส์มาตรฐานเพื่อใช้ Custom Cursor */
+            }
+
+            body {
+                background: var(--bg-gradient);
+                background-size: 400% 400%;
+                animation: gradientBG 15s ease infinite; /* พื้นหลังดุ๊กดิ๊ก */
+                color: #fff;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* =========================================
+               [3] ANIMATIONS
+               ========================================= */
+            @keyframes gradientBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            @keyframes shine {
+                to { background-position: 200%; }
+            }
+
+            /* =========================================
+               [4] BACKGROUND ELEMENTS (Orbs & Particles)
+               ========================================= */
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0; left: 0;
+                z-index: 0;
+            }
+
+            .orb {
+                position: fixed;
+                border-radius: 50%;
+                filter: blur(80px);
+                z-index: -1;
+                opacity: 0.5;
+                animation: float 20s infinite alternate;
+            }
+            .orb-1 { width: 400px; height: 400px; background: #764ba2; top: -10%; left: -10%; }
+            .orb-2 { width: 300px; height: 300px; background: #ff512f; bottom: 10%; right: 5%; animation-delay: -5s; }
+
+            @keyframes float {
+                from { transform: translate(0, 0); }
+                to { transform: translate(100px, 50px); }
+            }
+
+            /* =========================================
+               [5] CUSTOM CURSOR (เมาส์วงกลม)
+               ========================================= */
+            #cursor {
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                background: rgba(255, 235, 59, 0.5);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition: transform 0.1s ease, background 0.3s ease;
+            }
+
+            /* =========================================
+               [6] NAVIGATION BAR
+               ========================================= */
+            nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 10%;
+                background: var(--glass-bg);
+                backdrop-filter: blur(15px);
+                border-bottom: 1px solid var(--glass-border);
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+            }
+
+            .logo { 
+                font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; 
+                background: linear-gradient(90deg, #fff, var(--primary-gold), #fff);
+                background-size: 200%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: shine 3s linear infinite; /* แสงวิ่งที่โลโก้ */
+            }
+
+            nav ul { display: flex; list-style: none; }
+            nav ul li { margin-left: 30px; }
+            nav ul li a { color: white; text-decoration: none; opacity: 0.7; transition: var(--transition); }
+            nav ul li a:hover { opacity: 1; color: var(--primary-gold); }
+
+            /* =========================================
+               [7] HERO SECTION
+               ========================================= */
+            .hero {
+                height: 80vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                z-index: 1;
+                padding: 0 20px;
+            }
+
+            .hero h1 {
+                font-size: clamp(3rem, 8vw, 5rem); /* ปรับขนาดตามหน้าจออัตโนมัติ */
+                font-weight: 800;
+                text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                margin-bottom: 10px;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+                background: rgba(0,0,0,0.3);
+                padding: 10px 30px;
+                border-radius: 50px;
+                backdrop-filter: blur(5px);
+                margin-bottom: 40px;
+            }
+
+            .btn-glow {
+                padding: 18px 50px;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 700;
+                color: #fff;
+                background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+                box-shadow: 0 0 30px rgba(0, 210, 255, 0.5);
+                transition: var(--transition);
+            }
+
+            .btn-glow:hover {
+                transform: scale(1.1) rotate(2deg);
+                box-shadow: 0 0 50px rgba(0, 210, 255, 0.8);
+            }
+
+            /* =========================================
+               [8] ACCORDION (กล่องพับได้)
+               ========================================= */
+            .accordion-container {
+                max-width: 800px;
+                margin: 0 auto 60px;
+                padding: 0 20px;
+                z-index: 1;
+                position: relative;
+            }
+
+            .accordion-item {
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                margin-bottom: 15px;
+                overflow: hidden;
+                transition: var(--transition);
+            }
+
+            .accordion-header {
+                padding: 25px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-weight: 600;
+                font-size: 1.2rem;
+                color: var(--primary-gold);
+            }
+
+            .accordion-header .icon { transition: transform 0.4s ease; font-size: 1.5rem; }
+
+            /* สไตล์เมื่อเปิด Accordion */
+            .accordion-item.active { border-color: var(--primary-gold); }
+            .accordion-item.active .icon { transform: rotate(45deg); }
+
+            .accordion-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+                background: rgba(0,0,0,0.1);
+            }
+
+            .content-inner { padding: 0 25px 25px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+
+            /* =========================================
+               [9] FEATURES (Cards)
+               ========================================= */
+            .features {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+                padding: 0 10% 100px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .card {
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                padding: 50px 30px;
+                border-radius: 30px;
+                text-align: center;
+                border: 1px solid var(--glass-border);
+                transition: 0.5s;
+            }
+
+            .card:hover {
+                border-color: var(--primary-gold);
+                box-shadow: 0 0 40px rgba(255, 235, 59, 0.2);
+            }
+
+            /* =========================================
+               [10] FOOTER & RESPONSIVE
+               ========================================= */
+            footer {
+                text-align: center;
+                padding: 50px;
+                background: rgba(0,0,0,0.4);
+                color: rgba(255,255,255,0.5);
+            }
+
+            @media (max-width: 768px) {
+                #cursor { display: none; }
+                * { cursor: auto; } /* คืนค่าเมาส์ปกติในมือถือ */
+                nav ul { display: none; }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="cursor"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div id="particles-js"></div>
+
+        <nav>
+            <div class="logo">TONSYS <span>TECHNOLOGIES</span></div>
+            <ul>
+                <li><a href="#" class="nav-link">หน้าแรก</a></li>
+                <li><a href="#" class="nav-link">ฟีเจอร์</a></li>
+                <li><a href="#" class="nav-link">ติดต่อ</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <h1>COMING SOON</h1>
+                <p>รอทำเสร็จก่อนนะจ๊ะ <span class="typed-text"></span></p>
+                <a href="#" class="btn-glow nav-link">🔥 เริ่มต้นใช้งาน :3 </a>
+            </div>
+        </section>
+
+        <section class="accordion-container">
+            <div class="accordion-item">
+                <div class="accordion-header nav-link">
+                    <span>จุดเด่นของ Tonsys คืออะไร?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        Tonsys Technologies เน้นการสร้างนวัตกรรมที่ใช้งานง่ายแต่ทรงพลัง 
+                        เราผสมผสานดีไซน์ที่ล้ำสมัยเข้ากับประสิทธิภาพที่รวดเร็วที่สุด
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header nav-link">
+                    <span>ทำไมต้องรอ "Coming Soon"?</span>
+                    <span class="icon">+</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="content-inner">
+                        เพราะเรากำลังขัดเกลาทุกรายละเอียดให้สมบูรณ์แบบที่สุด 
+                        โปรเจกต์นี้จะเปลี่ยนวิธีการมองเว็บไซต์ของคุณไปตลอดกาล!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="card" data-tilt>
+                <i>🚀</i>
+                <h3>Speed</h3>
+                <p>เร็วแรง ทะลุนรก</p>
+            </div>
+            <div class="card" data-tilt>
+                <i>💎</i>
+                <h3>Premium</h3>
+                <p>สวยหรูดูแพง</p>
+            </div>
+            <div class="card" data-tilt>
+                <i>🎮</i>
+                <h3>Gaming</h3>
+                <p>สายลุยห้ามพลาด</p>
+            </div>
+        </section>
+
+        <footer>
+            &copy; 2026 Tonsys Technologies - Made with Passion
+        </footer>
+
+        <script is:inline src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script is:inline src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+        <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+        <script>
+            // 1. Custom Cursor: สั่งให้วงกลมวิ่งตามเมาส์
+            const cursor = document.getElementById('cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // ขยายเมาส์เมื่อเอาไปวางบนปุ่มหรือลิงก์
+            const interactiveElements = document.querySelectorAll('.nav-link, .card, .btn-glow');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(3)';
+                    cursor.style.background = 'rgba(255, 235, 59, 0.2)';
+                    cursor.style.border = '1px solid #ffeb3b';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursor.style.background = 'rgba(255, 235, 59, 0.5)';
+                    cursor.style.border = 'none';
+                });
+            });
+
+            // 2. Particles: ตั้งค่าจุดระยิบระยับพื้นหลัง
+            (window as any).particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 50 },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.2 },
+                    "size": { "value": 3 },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
+                    "move": { "enable": true, "speed": 1.5 }
+                }
+            });
+
+            // 3. Typed.js: พิมพ์ข้อความอัตโนมัติ
+            new (window as any).Typed('.typed-text', {
+                strings: ['กำลังสร้างสรรค์...', 'เตรียมตัวพบความล้ำ...', 'Tonsys is evolving!'],
+                typeSpeed: 60,
+                backSpeed: 30,
+                loop: true
+            });
+
+            // 4. Accordion Logic: ระบบเปิด-ปิดกล่องข้อความ
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    const content = item.querySelector('.accordion-content');
+                    const isActive = item.classList.contains('active');
+
+                    // ปิดอันอื่นก่อน
+                    accordionItems.forEach(i => {
+                        i.classList.remove('active');
+                        (i.querySelector('.accordion-content') as HTMLElement).style.maxHeight = '0';
+                    });
+
+                    // ถ้าอันที่กดอยู่ยังไม่เปิด ให้เปิดอันนั้น
+                    if (!isActive) {
+                        item.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
