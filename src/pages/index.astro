@@ -12,12 +12,257 @@
 
 		<style>
 			/* css */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            /* พื้นหลังสีเข้มขึ้นเพื่อให้ Particle ชัดเจน */
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* พื้นที่สำหรับ Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* อยู่หลังสุด */
+        }
+
+        /* --- แถบเมนู (Navbar) Glassmorphism --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(255, 255, 255, 0.05); /* โปร่งใสมากขึ้น */
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; color: #ffeb3b; }
+
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { color: white; text-decoration: none; transition: 0.3s; font-weight: 400; position: relative;}
+        /* เส้นใต้เวลา Hover เมนู */
+        nav ul li a::after {
+            content: ''; width: 0; height: 2px; background: #ffeb3b; position: absolute; bottom: -5px; left: 0; transition: 0.3s;
+        }
+        nav ul li a:hover::after { width: 100%; }
+
+
+        /* --- ส่วนต้อนรับ (Hero Section) --- */
+        .hero {
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        /* Animation การปรากฏตัว */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content > * {
+            opacity: 0; /* เริ่มต้นซ่อนไว้ก่อน */
+            animation: fadeUp 1s ease-out forwards;
+        }
+
+        .hero h1 {
+            font-size: 4rem; font-weight: 800; margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation-delay: 0.3s;
+            min-height: 1.2em; /* กันบรรทัดกระโดดตอนพิมพ์ */
+        }
+        /* สีของข้อความที่กำลังพิมพ์ */
+        .typed-text { color: #ffeb3b; }
+        /* Cursor กระพริบ */
+        .typed-cursor { color: #ffeb3b; font-weight: 100; }
+
+        .hero p {
+            font-size: 1.3rem; max-width: 700px; margin-bottom: 40px; opacity: 0.9;
+            animation-delay: 0.6s;
+            background: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 10px; /* เพิ่มพื้นหลังจางๆให้อ่านง่าย */
+        }
+
+        .btn-glow {
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700; font-size: 1.1rem;
+            color: #fff;
+            background: linear-gradient(90deg, #ff512f, #dd2476); /* ปุ่มไล่สี */
+            box-shadow: 0 0 20px rgba(221, 36, 118, 0.5);
+            transition: 0.4s;
+            animation-delay: 0.9s;
+            border: 2px solid transparent;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 40px rgba(221, 36, 118, 0.8);
+            background: transparent;
+            border: 2px solid #dd2476;
+        }
+
+        /* --- ส่วน Card บริการ 3D Tilt --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 80px 10%;
+            background: rgba(0,0,0,0.2); /* พื้นหลังส่วนนี้ให้เข้มขึ้นนิดนึง */
+            position: relative;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1); /* Glassmorphism Card */
+            backdrop-filter: blur(10px);
+            padding: 50px 30px;
+            border-radius: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            opacity: 0; animation: fadeUp 1s ease-out forwards; animation-delay: 1.2s; /* Animation */
+
+            /* สำหรับ 3D Tilt */
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .card-content {
+            transform: translateZ(30px); /* ดันเนื้อหาให้ลอยออกมาจากการ์ด */
+        }
+
+        .card i { font-size: 4rem; color: #ffeb3b; margin-bottom: 25px; display: block; text-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+        .card h3 { margin-bottom: 15px; font-size: 1.5rem; }
+        .card p { color: rgba(255,255,255,0.8); }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.5);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav ul { display: none; }
+        }
 		</style>
 	</head>
 	<body>
          <!-- HTML -->
-		<script>
-			// JS
-		</script>
+<div id="particles-js"></div>
+
+    <nav>
+        <div class="logo">HYPER<span>DEV</span></div>
+        <ul>
+            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="#">ฟีเจอร์</a></li>
+            <li><a href="#">ราคา</a></li>
+            <li><a href="#">เข้าสู่ระบบ</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>COMING SOON<span class="typed-text"></span></h1>
+            <p>อัปเกรดหน้าเว็บของคุณให้ดูพรีเมียม มีมิติ และน่าตื่นตาตื่นใจยิ่งกว่าเดิม ด้วยลูกเล่น Interactive ที่ทันสมัยที่สุด</p>
+            <a href="#" class="btn-glow">🔥 เริ่มต้นความเทพที่นี่</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
+            <div class="card-content">
+                <i>🚀</i>
+                <h3>Speed & Power</h3>
+                <p>เร็วแรง ทะลุนรก โหลดไวยิ่งกว่าแสง</p>
+            </div>
+        </div>
+        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
+            <div class="card-content">
+                <i>💎</i>
+                <h3>Premium Design</h3>
+                <p>สวยหรูดูแพง ด้วยสไตล์ Glassmorphism</p>
+            </div>
+        </div>
+        <div class="card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.3">
+            <div class="card-content">
+                <i>🎮</i>
+                <h3>Interactive</h3>
+                <p>ตอบสนองทุกการเคลื่อนไหวอย่างมีมิติ</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 Tonsys Technologies - โค้ดนี้แจกฟรี เอาไปใช้ได้เลยวัยรุ่น!
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        (window as any).particlesJS('particles-js',
+          {
+            "particles": {
+              "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+              "color": { "value": "#ffffff" },
+              "shape": { "type": "circle" },
+              "opacity": { "value": 0.3, "random": true },
+              "size": { "value": 3, "random": true },
+              "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+              "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+              "detect_on": "canvas",
+              "events": {
+                "onhover": { "enable": true, "mode": "grab" }, /* เอาเมาส์ไปโดนแล้วจะจับเส้น */
+                "onclick": { "enable": true, "mode": "push" },
+                "resize": true
+              },
+              "modes": {
+                "grab": { "distance": 140, "line_linked": { "opacity": 1 } }
+              }
+            },
+            "retina_detect": true
+          }
+        );
+    </script>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script>
+        var typed = new (window as any).Typed('.typed-text', {
+            /* ใส่ข้อความที่อยากให้พิมพ์ตรงนี้ */
+            strings: ['เว็บไซต์สุดล้ำ 🚀', 'ประสบการณ์ใหม่ ✨', 'ความแตกต่างที่เหนือกว่า 🔥'],
+            typeSpeed: 60,    // ความเร็วในการพิมพ์
+            backSpeed: 40,    // ความเร็วในการลบ
+            backDelay: 1500,  // รอเวลาก่อนลบ
+            loop: true        // วนซ้ำไปเรื่อยๆ
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 	</body>
 </html>
