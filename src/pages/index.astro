@@ -15,7 +15,7 @@
             --tech-green: #5b5555;
             --furry-pink: #ffffff;
             --bg-dark: #0a0a0a;
-            --bg-gradient: linear-gradient(-45deg, #1a2a6c, #b21f1f, #fdbb2d, #22c1c3);
+            --bg-gradient: linear-gradient(-45deg, #1a2a6c, #44caff, #9900ff, #000000);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
@@ -29,8 +29,14 @@
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
-            cursor: none; 
         }
+
+        @keyframes gradientBG { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+        
         /* มั่นใจว่า Link ต่างๆ ก็ไม่โชว์เมาส์ปกติ */
         a, button, [role="button"] { cursor: none; }
 
@@ -196,22 +202,29 @@
         }
 
         .contact-section {
-            text-align: center; z-index: 1; 
+            text-align: center;
+            z-index: 1;
             position: relative;
             background: rgba(87, 87, 87, 0.342);
             border: 1px solid #333;
             display: flex;
+            flex-direction: column; /* ✅ เพิ่มอันนี้: ให้ของข้างในเรียงลงมาเวลาจอแคบ */
             place-items: center;
             border-radius: 20px;
             margin-bottom: 25px;
-            width: 650px;
-            height: 350px;
-            margin: auto;
+    
+            /* ❌ ลบของเก่า: width: 650px; height: 350px; */
+    
+            /* ✅ ใส่ของใหม่: */
+            width: 90%;            /* ให้กว้าง 90% ของหน้าจอเสมอ (จะได้มีขอบเหลือนิดนึง) */
+            max-width: 650px;      /* แต่ห้ามกว้างเกิน 650px (เวลาเปิดในคอมจะได้ไม่ใหญ่ไป) */
+            min-height: 300px;     /* ใช้ min-height แทน เพื่อให้มันยืดความสูงได้ถ้าของข้างในเยอะ */
+            padding: 40px 20px;    /* เพิ่มระยะห่างข้างในกล่อง จะได้ไม่เบียดขอบ */
+    
+            margin: 20px auto;     /* จัดกลางเหมือนเดิม */
         }
-        
-        .contact-card {
-            margin: 0 auto;
-        }
+
+
         .social-links { 
             display: flex; 
             justify-content: center; 
