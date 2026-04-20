@@ -15,7 +15,7 @@
             --tech-green: #5b5555;
             --furry-pink: #ffffff;
             --bg-dark: #0a0a0a;
-            --bg-gradient: linear-gradient(-45deg, #1a2a6c, #44caff, #9900ff, #000000);
+            --bg-gradient: linear-gradient(-45deg, #050a15, #1e3c72, #ad1818, #16213e);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
@@ -81,8 +81,11 @@
             position: relative; overflow: hidden; text-align: center;
         }
         .hero-title { font-size: clamp(3rem, 12vw, 8rem); font-weight: 800; line-height: 1; }
-        .tech-side { color: var(--tech-green); text-shadow: 0 0 20px rgba(78, 78, 78, 0.4); }
-        .furry-side { color: #f9dc00; }
+        /* แก้ในส่วน <style> ของมึง */
+        .tech-side { color: #e0e0e0; text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); } /* สีเทาขาวสะอาดๆ */
+        .er-side { color: #ff3c3c; text-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }      /* แดงสว่างๆ ขยี้คำว่า ERROR */
+        .furry-side { color: #00f2ff; text-shadow: 0 0 20px rgba(0, 242, 255, 0.6); } /* ฟ้า Cyan แบบ NixOS */
+
 
         /* คำอธิบายเว็บที่ปรับปรุงใหม่ */
         .intro { 
@@ -93,34 +96,38 @@
         }
         .intro p { 
             font-size: 1.1rem; 
-            color: var(--tech-green); 
+            color: #fff; 
             font-family: 'JetBrains Mono', monospace;
-            background: rgba(255, 255, 255, 0.705);
+            background: rgba(95, 95, 95, 0.178);
             padding: 15px;
             border-radius: 8px;
-            border: 1px solid var(--tech-green);
+            border: 1px solid #ffffff;
         }
 
         /* === ✅ จุดที่ 3: เตรียมการ์ดให้เอียงได้ (Perspective) === */
+        /* --- แก้ไขจุดนี้ --- */
         .archive-container { 
-            padding: 60px 5%; 
+            padding: 20px 5%; /* ลด Padding บน-ล่าง จาก 60px เหลือ 20px */
             max-width: 1100px; 
             margin: 0 auto;
-            perspective: 1000px; /* เพิ่มบรรทัดนี้เพื่อให้ลูกมันเอียงแบบ 3D ได้ */
+            perspective: 1000px;
         }
+
         
         /* === ✅ จุดที่ 4: ปรับแต่ง Project Item สำหรับ Animation === */
+        /* --- แก้ไขจุดนี้ --- */
         .project-item {
             background: rgba(87, 87, 87, 0.342);
             border: 1px solid #333;
             border-radius: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 12px; /* ลดจาก 25px เหลือ 12px เพื่อให้ดูชิดกันมากขึ้น */
             overflow: hidden;
             backdrop-filter: blur(15px);
-            transition: transform 0.1s ease, box-shadow 0.3s ease; /* transition เฉพาะ transform และ boxShadow เพื่อความลื่น */
-            transform-style: preserve-3d; /* สำคัญ: ทำให้ลูกเอียงตามพ่อได้ */
-            will-change: transform; /* บอก browser ให้เตรียมตัวสำหรับการขยับ */
+            transition: transform 0.1s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
+
 
         .project-header { padding: 30px; display: flex; justify-content: space-between; align-items: center; cursor: none; } /* เปลี่ยน cursor:none ตรงนี้ด้วย */
         .project-header h3 { font-size: 1.6rem; font-weight: 700; color: #fff; }
@@ -131,7 +138,7 @@
         
         .project-image { flex: 1; min-width: 280px; height: 300px; background: #222; border-radius: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #444; }
         .project-info { flex: 1.5; min-width: 280px; }
-        .project-info h4 { color: var(--tech-green); margin-bottom: 10px; font-size: 1.4rem; }
+        .project-info h4 { color: #fff; margin-bottom: 10px; font-size: 1.4rem; }
         .project-info p { line-height: 1.7; opacity: 0.8; margin-bottom: 15px; }
 
         /* === ✅ จุดที่ 5: เรืองแสงเวลา Hover === */
@@ -269,10 +276,13 @@
     <main>
         <section class="hero">
             <h1 class="hero-title">
-                <span class="tech-side">TECH</span><br><span class="furry-side">FURRY</span>
+                <span class="tech-side">REALITY IS </span>
+                <span class="er-side">ERROR</span>
+                <span class="tech-side">PRONE</span><br>
+                <span class="furry-side">CODE IS PERFECT</span>
             </h1>
             <div class="intro">
-                <p> Welcome to my Digital Den. รวบรวมทุกโปรเจกต์ตั้งแต่การเขียนโค้ดคุม Server ยันงานอาร์ตสุดนุ่มฟู ทั้งหมดคือตัวตนของกู "Tonson" ในโลกไซเบอร์.</p>
+                <p> Welcome dev </p>
             </div>
         </section>
 
@@ -285,18 +295,40 @@
                 <div class="project-content">
                     <div class="content-inner">
                         <div class="project-image">
-                            <img src="/tonsys-logo-only.png" alt="CSG-X CERBERUS "width="300" height="200">
+                            <!-- <img src="/tonsys-logo-only.png" alt="CSG-X CERBERUS "width="300" height="200"> -->
+                            <p>ไม่มีรูปภาพภาพ</p>
                         </div>
                         <div class="project-info">
                             <h4>The Security Guardian</h4>
-                            <p>นี่คือโปรเจกต์ที่กูภูมิใจที่สุด มันคือระบบหลังบ้านที่แข็งแกร่งเหมือนหมาสามหัวเฝ้านรก รันบน NixOS พร้อมความปลอดภัยระดับที่ใครก็เจาะยาก</p>
-                            <p>มึงสามารถเขียนบรรยายความเจ๋งของมันได้ยาวๆ ตรงนี้เลยเพื่อน!</p>
+                            <p>นี่คือโปรเจกต์ความปลอดภัยที่แข็งแกร่ง(ไม่ที่สุด)  มาพร้อมกับระบบตรวจสอบหลายขั้น และ สามารถรันได้บน NixOS และ หลายๆระบบปฎิบัติการ</p>
+                            <p>ระบบความปลอดภัยนี้มีความสามารถในการตรวจสอบภัยคุกคามได้อย่างมีประสิทธิภาพ</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-    
+        </section>
+
+        <section class="archive-container">
+            <div class="project-item">
+                <div class="project-header">
+                    <h3>01. CSG-X CERBERUS</h3>
+                    <div class="arrow">▼</div>
+                </div>
+                <div class="project-content">
+                    <div class="content-inner">
+                        <div class="project-image">
+                            <!-- <img src="/tonsys-logo-only.png" alt="CSG-X CERBERUS "width="300" height="200"> -->
+                            <p>ไม่มีรูปภาพภาพ</p>
+                        </div>
+                        <div class="project-info">
+                            <h4>The Security Guardian</h4>
+                            <p>นี่คือโปรเจกต์ความปลอดภัยที่แข็งแกร่ง(ไม่ที่สุด)  มาพร้อมกับระบบตรวจสอบหลายขั้น และ สามารถรันได้บน NixOS และ หลายๆระบบปฎิบัติการ</p>
+                            <p>ระบบความปลอดภัยนี้มีความสามารถในการตรวจสอบภัยคุกคามได้อย่างมีประสิทธิภาพ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <section class="contact-section" id="contact" >
