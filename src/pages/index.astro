@@ -153,7 +153,12 @@
         .project-item.active .project-content { max-height: 1500px; }
         .project-item.active .arrow { transform: rotate(180deg); color: var(--furry-pink); }
  
-        .logo { font-weight: 800; color: var(--tech-green); }
+        .logo { font-weight: 800; color: #ffffff; }
+        .status { 
+            font-size: 0.8rem; 
+            font-family: 'JetBrains Mono'; 
+            color: #fff; 
+        }
 
         /* [5] FOOTER - THE GUARDIAN DATA */
         .footer-base {
@@ -269,7 +274,7 @@
 
     <nav>
         <div class="logo">TONSYS_HOMEBASE</div>
-        <div style="font-size: 0.8rem; opacity: 0.5; font-family: 'JetBrains Mono';">STATUS: CUTE_BUT_DEADLY</div>
+        <div class="status">STATUS: CUTE_BUT_DEADLY</div>
     </nav>
 
     <div class="split-bg"></div>
@@ -303,29 +308,18 @@
                         <div class="project-info">
                             <h4>The Security Guardian</h4>
                             <p>นี่คือโปรเจกต์ความปลอดภัยที่แข็งแกร่ง(ไม่ที่สุด)  มาพร้อมกับระบบตรวจสอบหลายขั้น และ สามารถรันได้บน NixOS และ หลายๆระบบปฎิบัติการ</p>
-                            <p>ระบบความปลอดภัยนี้มีความสามารถในการตรวจสอบภัยคุกคามได้อย่างมีประสิทธิภาพ</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="archive-container">
-            <div class="project-item">
-                <div class="project-header">
-                    <h3>01. CSG-X CERBERUS</h3>
-                    <div class="arrow">▼</div>
-                </div>
-                <div class="project-content">
-                    <div class="content-inner">
-                        <div class="project-image">
-                            <!-- <img src="/tonsys-logo-only.png" alt="CSG-X CERBERUS "width="300" height="200"> -->
-                            <p>ไม่มีรูปภาพภาพ</p>
-                        </div>
-                        <div class="project-info">
-                            <h4>The Security Guardian</h4>
-                            <p>นี่คือโปรเจกต์ความปลอดภัยที่แข็งแกร่ง(ไม่ที่สุด)  มาพร้อมกับระบบตรวจสอบหลายขั้น และ สามารถรันได้บน NixOS และ หลายๆระบบปฎิบัติการ</p>
-                            <p>ระบบความปลอดภัยนี้มีความสามารถในการตรวจสอบภัยคุกคามได้อย่างมีประสิทธิภาพ</p>
+                            <p>
+                                ​🏗️ 1. สถาปัตยกรรมระบบ (The 3-Node Structure) <br>
+                                ​ผมสรุปโครงสร้างการตัดต่อข้อมูลเป็น 3 ส่วน <br>
+                                เพื่อความปลอดภัยระดับองค์กร ดังนี้ครับ: <br>
+                                ​เครื่องปลายทาง (Employee Endpoint): พื้นที่ทำงานที่ต้องมีโปรแกรมเฉพาะฝังอยู่เพื่อตรวจสอบไฟล์และป้องกันภัยคุกคามเบื้องต้น​เครื่อง <br>
+                                ตัวกลาง (The Mediator): สมองกลส่วนกลางที่คอยตัดสินใจ วิเคราะห์พฤติกรรม และเช็คสิทธิ์การเข้าถึงแทนเซิร์ฟเวอร์ เพื่อเป็นด่านหน้าในการกรองข้อมูล <br>
+                                ​สถานีข้อมูลปิด (Isolated Data Station): จุดเก็บข้อมูลสูงสุดที่จะรับข้อมูลผ่าน "ท่อปลอดภัย" จากเครื่องตัวกลางเท่านั้น และพร้อมตัดการเชื่อมต่อทันทีหากเกิดเหตุฉุกเฉิน​ <br>
+                                📦 2. ระบบไฟล์นิรภัย (.cgsx)​สรุปกลไกพิเศษของไฟล์งานในระบบที่ถูกออกแบบมาให้ "ย้ายได้แต่เปิดไม่ได้" หากผิดเงื่อนไข: <br>
+                                กลไกไฟล์ตัวประกัน: ภายในหนึ่งไฟล์ประกอบด้วยไฟล์งานและ "ไฟล์เพื่อน" ที่ต้องอยู่คู่กันเสมอ<br>
+                                ​การป้องกันการคัดลอก: หากไฟล์งานถูกดึงออกไปโดยไม่มีไฟล์เพื่อนตามมา ระบบจะปฏิเสธการเข้าถึงข้อมูลทันที​<br>
+                                ความสมบูรณ์ของ Seed: มีการใช้รหัสเฉพาะและลายเซ็นดิจิทัลกำกับ หากมีการดัดแปลงเพียงเล็กน้อย ไฟล์จะถูกล็อกหรือเสียหายทันทีเพื่อป้องกันการเจาะข้อมูล
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -363,7 +357,7 @@
         </div>
 
         <div class="copyright">
-            © TONSYS HOMEBASE 2026 | ALL RIGHTS RESERVED BY LUPHARION
+            © TONSYS HOMEBASE 2026 | ALL RIGHTS RESERVED BY ADISON
         </div>
     </footer>
     
